@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار تفعيل 911 Police Mod</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tahoma', 'Arial', sans-serif;
+        }
+
+        body {
+            /* تدرج من أعلى إلى أسفل: أزرق غامق → أسود → أحمر */
+            background: linear-gradient(to bottom, #0a1a3a 0%, #000000 50%, #8b0000 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 30px;
+            padding: 30px 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            border: 3px solid #d4a744;
+            backdrop-filter: blur(2px);
+        }
+
+        /* اللوقو */
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            max-width: 130px;
+            border-radius: 50%;
+            border: 4px solid #d4a744;
+            background: #fff;
+            padding: 6px;
+            display: inline-block;
+        }
+        .logo h1 {
+            font-size: 34px;
+            color: #0a1a2e;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0 #d4a744;
+        }
+        .logo p {
+            color: #2c3e50;
+            font-weight: bold;
+            border-bottom: 3px solid #d4a744;
+            display: inline-block;
+            padding-bottom: 6px;
+            font-size: 18px;
+        }
+
+        /* حقل الاسم وزر البدء */
+        .user-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0 30px;
+        }
+        .user-section label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0a1a2e;
+        }
+        .user-section input {
+            padding: 10px 18px;
+            border-radius: 30px;
+            border: 2px solid #b0c4de;
+            font-size: 16px;
+            flex: 1;
+            min-width: 200px;
+            outline: none;
+            transition: 0.3s;
+            background: #fff;
+        }
+        .user-section input:focus {
+            border-color: #d4a744;
+            box-shadow: 0 0 12px #d4a744aa;
+        }
+
+        .btn {
+            background: #0a1a2e;
+            color: #fff;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 2px solid #d4a744;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .btn:hover {
+            background: #d4a744;
+            color: #0a1a2e;
+            transform: scale(1.03);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* الأسئلة */
+        .question {
+            background: #f0f5fa;
+            padding: 15px 18px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            border-right: 8px solid #d4a744;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .question h3 {
+            font-size: 18px;
+            color: #0a1a2e;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .question .q-number {
+            background: #d4a744;
+            color: #0a1a2e;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 25px;
+            margin-top: 8px;
+        }
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            color: #1e2f3f;
+            font-weight: 500;
+        }
+        .options input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #d4a744;
+            cursor: pointer;
+        }
+
+        /* رسالة خطأ */
+        .error-msg {
+            color: #b22222;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+            background: #ffe0e0;
+            padding: 10px;
+            border-radius: 12px;
+            border: 2px solid #b22222;
+            display: none;
+        }
+
+        /* النتيجة */
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #0a1a2e;
+            color: #fff;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border: 3px solid #d4a744;
+            display: none;
+        }
+        .result-box span {
+            color: #d4a744;
+            font-size: 34px;
+        }
+        .result-box .name-result {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+        .result-box .msg {
+            font-size: 18px;
+            font-weight: normal;
+            margin-top: 8px;
+            color: #eee;
+        }
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #5a7a9a;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px 15px; }
+            .question h3 { font-size: 16px; }
+            .options { gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app">
+
+    <!-- اللوقو (ضع صورتك باسم logo.png في نفس المجلد) -->
+    <div class="logo">
+        <img src="logo.png" alt="لوقو السيرفر">
+        <h1>🚔 911 Police Mod</h1>
+        <p>اختبار التفعيل الرسمي</p>
+    </div>
+
+    <!-- حقل الاسم وزر البدء -->
+    <div class="user-section">
+        <label for="userName">👤 اسمك:</label>
+        <input type="text" id="userName" placeholder="أدخل اسمك هنا..." />
+        <button class="btn" id="startBtn">ابدأ الاختبار</button>
+    </div>
+
+    <!-- منطقة الأسئلة (تظهر بعد الضغط على بدء) -->
+    <div id="questionsArea" style="display: none;">
+        <div id="questionsContainer"></div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn" id="submitBtn">📊 احسب نتيجتي</button>
+        </div>
+        <div id="errorMsg" class="error-msg"></div>
+    </div>
+
+    <!-- النتيجة -->
+    <div class="result-box" id="resultBox">
+        <div class="name-result" id="resultName"></div>
+        <div>⭐ نتيجتك: <span id="resultScore">0</span> / 13</div>
+        <div class="msg" id="resultMessage"></div>
+        <button class="btn" style="margin-top: 18px; background: #d4a744; color: #0a1a2e;" id="retryBtn">🔄 إعادة الاختبار</button>
+    </div>
+
+    <div class="footer">© 2026 - 911 Police Mod | جميع الحقوق محفوظة</div>
+</div>
+
+<script>
+    (function() {
+        // ---------- البيانات ----------
+        const questions = [
+            { id: 1, text: 'هل يحق لك قطع الإشارة في حال كنت عسكري؟', options: ['نعم', 'لا'], correct: 0 },
+            { id: 2, text: 'هل يحق لك إطلاق النار على المواطن؟', options: ['نعم', 'لا'], correct: 0 },
+            { id: 3, text: 'في حال الاستيقاف الجنائي؛ تستوقف الدورية أمام مركبة المخالف أم خلفها؟', options: ['من الأمام', 'من الخلف'], correct: 0 },
+            { id: 4, text: 'في حال الاستيقاف المروري؛ تستوقف الدورية أمام مركبة المخالف أم خلفها؟', options: ['من الأمام', 'من الخلف'], correct: 1 },
+            { id: 5, text: 'هل يحق لك تشغيل الونان بدون سبب؟', options: ['نعم', 'لا'], correct: 1 },
+            { id: 6, text: 'ماهو الـ RDM؟', options: ['القتل العشوائي', 'الصدم العشوائي', 'القتل المتعمد'], correct: 0 },
+            { id: 7, text: 'ماهو الـ VDM؟', options: ['القتل العشوائي', 'الصدم العشوائي', 'الصدم المتعمد'], correct: 1 },
+            { id: 8, text: 'في حال تم توجيهي من قبل مركز العمليات هل يحق لي مخالفة التوجيه؟', options: ['نعم', 'لا'], correct: 1 },
+            { id: 9, text: 'هل يحق لي عدم انصياع أوامر الرتب العليا ومجادلتهم؟', options: ['نعم', 'لا'], correct: 1 },
+            { id: 10, text: 'ماهو الرول بلاي؟', options: ['تقمص الشخصية بالأقوال والأفعال', 'قيادة المركبة بسرعة', 'إطلاق النار على المخالفين'], correct: 0 },
+            { id: 11, text: 'هل يحق لك قطع بلاغ زميلك وإرسال بلاغك إذا عندك حالة اضطرارية؟', options: ['نعم', 'لا'], correct: 1 },
+            { id: 12, text: 'في حال كنت في سيناريو وقُتِلْت هل يحق لك الرجوع مكان السيناريو؟', options: ['نعم', 'لا'], correct: 1 },
+            { id: 13, text: 'هل يحق لك بعمل اصطفاف عسكري في حال كنت برتبة رئيس رقباء؟', options: ['نعم', 'لا'], correct: 1 }
+        ];
+
+        // عناصر DOM
+        const userNameInput = document.getElementById('userName');
+        const startBtn = document.getElementById('startBtn');
+        const questionsArea = document.getElementById('questionsArea');
+        const questionsContainer = document.getElementById('questionsContainer');
+        const submitBtn = document.getElementById('submitBtn');
+        const resultBox = document.getElementById('resultBox');
+        const resultName = document.getElementById('resultName');
+        const resultScore = document.getElementById('resultScore');
+        const resultMessage = document.getElementById('resultMessage');
+        const retryBtn = document.getElementById('retryBtn');
+        const errorMsg = document.getElementById('errorMsg');
+
+        let currentUserName = '';
+
+        // عرض الأسئلة
+        function renderQuestions() {
+            let html = '';
+            questions.forEach((q) => {
+                const optionsHtml = q.options.map((opt, optIndex) => {
+                    return `<label>
+                                <input type="radio" name="q${q.id}" value="${optIndex}" />
+                                ${opt}
+                            </label>`;
+                }).join('');
+
+                html += `
+                    <div class="question">
+                        <h3><span class="q-number">${q.id}</span> ${q.text}</h3>
+                        <div class="options">${optionsHtml}</div>
+                    </div>
+                `;
+            });
+            questionsContainer.innerHTML = html;
+        }
+
+        // حساب النتيجة
+        function calculateScore() {
+            let correctCount = 0;
+            let allAnswered = true;
+            let unanswered = [];
+
+            questions.forEach(q => {
+                const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                if (!selected) {
+                    allAnswered = false;
+                    unanswered.push(q.id);
+                    return;
+                }
+                const val = parseInt(selected.value);
+                if (val === q.correct) correctCount++;
+            });
+
+            return { allAnswered, correctCount, unanswered };
+        }
+
+        // عرض النتيجة
+        function showResult(score, total) {
+            resultScore.textContent = score;
+            resultName.textContent = `👮 ${currentUserName}`;
+
+            let msg = '';
+            if (score === total) msg = '🏆 ممتاز! إجابة كاملة 100%';
+            else if (score >= 10) msg = '👍 جيد جداً، اجتزت الاختبار بنجاح';
+            else if (score >= 7) msg = '📖 تحتاج مراجعة بعض النقاط';
+            else msg = '❌ للأسف لم تجتز الاختبار، حاول مرة أخرى';
+
+            resultMessage.textContent = msg;
+            resultBox.style.display = 'block';
+            questionsArea.style.display = 'none';
+            startBtn.style.display = 'none';
+            errorMsg.style.display = 'none';
+        }
+
+        // بدء الاختبار
+        function startExam() {
+            const name = userNameInput.value.trim();
+            if (name === '') {
+                alert('⛔ يرجى إدخال اسمك أولاً.');
+                return;
+            }
+            currentUserName = name;
+            renderQuestions();
+            questionsArea.style.display = 'block';
+            startBtn.style.display = 'none';
+            resultBox.style.display = 'none';
+            errorMsg.style.display = 'none';
+            questionsArea.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // معالج زر حساب النتيجة
+        function handleSubmit() {
+            const { allAnswered, correctCount, unanswered } = calculateScore();
+
+            if (!allAnswered) {
+                errorMsg.textContent = `⚠️ لم تجب على الأسئلة: ${unanswered.join('، ')}. الرجاء إكمال الإجابة.`;
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            errorMsg.style.display = 'none';
+            showResult(correctCount, questions.length);
+        }
+
+        // إعادة الاختبار
+        function resetExam() {
+            startBtn.style.display = 'inline-block';
+            resultBox.style.display = 'none';
+            questionsArea.style.display = 'none';
+            userNameInput.value = '';
+            currentUserName = '';
+            errorMsg.style.display = 'none';
+            renderQuestions(); // لإعادة تعيين الراديوات
+            userNameInput.focus();
+        }
+
+        // ربط الأحداث
+        startBtn.addEventListener('click', startExam);
+        userNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') startExam(); });
+        submitBtn.addEventListener('click', handleSubmit);
+        retryBtn.addEventListener('click', resetExam);
+
+        // تجهيز أولي
+        questionsArea.style.display = 'none';
+        resultBox.style.display = 'none';
+        renderQuestions();
+        errorMsg.style.display = 'none';
+    })();
+</script>
+</body>
+</html>
