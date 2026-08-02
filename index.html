@@ -5,65 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اختبار تفعيل 911 Police Mod</title>
     <style>
+        /* ===== إعادة تعيين ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Tahoma', 'Arial', sans-serif;
+            font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif;
         }
 
         body {
-            /* تدرج من أعلى إلى أسفل: أزرق غامق → أسود → أحمر */
-            background: linear-gradient(to bottom, #0a1a3a 0%, #000000 50%, #8b0000 100%);
+            background: #0a1628;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
             margin: 0;
+            position: relative;
         }
 
+        /* ===== خلفية متحركة (نجوم خفيفة) ===== */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,0.15), transparent),
+                radial-gradient(1.5px 1.5px at 40px 70px, rgba(255,255,255,0.10), transparent),
+                radial-gradient(1.5px 1.5px at 50px 160px, rgba(255,255,255,0.20), transparent),
+                radial-gradient(1.5px 1.5px at 90px 40px, rgba(255,255,255,0.10), transparent),
+                radial-gradient(1.5px 1.5px at 130px 80px, rgba(255,255,255,0.15), transparent);
+            background-size: 200px 200px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== الحاوية الرئيسية ===== */
         .container {
-            max-width: 800px;
+            max-width: 850px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.92);
-            border-radius: 30px;
-            padding: 30px 25px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
-            border: 3px solid #d4a744;
-            backdrop-filter: blur(2px);
+            background: #ffffff;
+            border-radius: 40px;
+            padding: 35px 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+            border: 2px solid #c8d0dc;
         }
 
-        /* اللوقو */
+        /* ===== اللوقو ===== */
         .logo {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        .logo::after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 3px;
+            background: #c8d0dc;
+            margin: 12px auto 0;
+            border-radius: 2px;
         }
         .logo img {
-            max-width: 130px;
+            max-width: 110px;
             border-radius: 50%;
-            border: 4px solid #d4a744;
+            border: 3px solid #c8d0dc;
             background: #fff;
-            padding: 6px;
-            display: inline-block;
+            padding: 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .logo img:hover {
+            transform: scale(1.05);
         }
         .logo h1 {
             font-size: 34px;
-            color: #0a1a2e;
-            margin-top: 10px;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 0 #d4a744;
+            color: #0a1628;
+            margin-top: 12px;
+            letter-spacing: 1px;
         }
-        .logo p {
-            color: #2c3e50;
+        .logo .subtitle {
+            color: #4a5a7a;
             font-weight: bold;
-            border-bottom: 3px solid #d4a744;
+            border-bottom: 2px solid #c8d0dc;
             display: inline-block;
-            padding-bottom: 6px;
-            font-size: 18px;
+            padding-bottom: 5px;
+            font-size: 17px;
+            letter-spacing: 0.5px;
         }
 
-        /* حقل الاسم وزر البدء */
+        /* ===== حقل الاسم وزر البدء ===== */
         .user-section {
             display: flex;
             flex-wrap: wrap;
@@ -71,193 +108,438 @@
             align-items: center;
             justify-content: center;
             margin: 20px 0 30px;
+            padding: 20px;
+            background: #f5f7fa;
+            border-radius: 20px;
+            border: 1px solid #e0e5ed;
         }
         .user-section label {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: bold;
-            color: #0a1a2e;
+            color: #0a1628;
         }
         .user-section input {
-            padding: 10px 18px;
+            padding: 12px 20px;
             border-radius: 30px;
-            border: 2px solid #b0c4de;
+            border: 2px solid #d0d8e4;
             font-size: 16px;
             flex: 1;
             min-width: 200px;
             outline: none;
             transition: 0.3s;
             background: #fff;
+            color: #0a1628;
         }
         .user-section input:focus {
-            border-color: #d4a744;
-            box-shadow: 0 0 12px #d4a744aa;
+            border-color: #0a1628;
+            box-shadow: 0 0 12px rgba(10, 22, 40, 0.15);
+        }
+        .user-section input::placeholder {
+            color: #a0aec0;
         }
 
+        /* ===== الأزرار ===== */
         .btn {
-            background: #0a1a2e;
+            background: #0a1628;
             color: #fff;
             border: none;
-            padding: 10px 30px;
-            border-radius: 30px;
-            font-size: 18px;
+            padding: 12px 34px;
+            border-radius: 50px;
+            font-size: 17px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
-            border: 2px solid #d4a744;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: 0.3s ease;
+            border: 2px solid #0a1628;
+            box-shadow: 0 4px 12px rgba(10, 22, 40, 0.25);
+            display: inline-block;
+            text-decoration: none;
+            letter-spacing: 0.5px;
         }
         .btn:hover {
-            background: #d4a744;
-            color: #0a1a2e;
-            transform: scale(1.03);
+            background: #1a2a4a;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(10, 22, 40, 0.35);
         }
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .btn-discord {
+            background: #5865F2;
+            border-color: #5865F2;
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+        }
+        .btn-discord:hover {
+            background: #4752c4;
+            border-color: #4752c4;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            color: #0a1628;
+            border: 2px solid #c8d0dc;
+            box-shadow: none;
+        }
+        .btn-outline:hover {
+            background: #f0f2f5;
+            color: #0a1628;
+            border-color: #a0aec0;
+            transform: translateY(-2px);
+        }
+        .btn-danger {
+            background: #a32020;
+            border-color: #a32020;
+            padding: 6px 20px;
+            font-size: 14px;
+        }
+        .btn-danger:hover {
+            background: #cc0000;
+            border-color: #cc0000;
+            color: #fff;
         }
 
-        /* الأسئلة */
+        /* ===== منطقة تسجيل الدخول ===== */
+        #loginArea {
+            text-align: center;
+            margin: 0 0 20px;
+        }
+        .user-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            background: #f5f7fa;
+            padding: 6px 20px 6px 16px;
+            border-radius: 50px;
+            border: 1px solid #e0e5ed;
+        }
+        .user-info img {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 2px solid #c8d0dc;
+        }
+        .user-info .username {
+            font-weight: bold;
+            color: #0a1628;
+            font-size: 16px;
+        }
+        .hide {
+            display: none !important;
+        }
+
+        /* ===== شريط التقدم ===== */
+        .progress-bar {
+            background: #e9edf2;
+            border-radius: 50px;
+            height: 7px;
+            margin: 12px 0 18px;
+            overflow: hidden;
+            border: 1px solid #d0d8e4;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            background: #0a1628;
+            border-radius: 50px;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+        .progress-text {
+            text-align: left;
+            font-size: 14px;
+            color: #4a5a7a;
+            font-weight: 600;
+            margin-top: -10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* ===== الأسئلة ===== */
         .question {
-            background: #f0f5fa;
-            padding: 15px 18px;
-            margin-bottom: 15px;
-            border-radius: 15px;
-            border-right: 8px solid #d4a744;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #f7f9fc;
+            padding: 18px 22px;
+            margin-bottom: 14px;
+            border-radius: 16px;
+            border-right: 5px solid #c8d0dc;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.25s ease;
+            animation: fadeSlide 0.3s ease forwards;
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        .question:hover {
+            background: #f0f3f8;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         }
         .question h3 {
-            font-size: 18px;
-            color: #0a1a2e;
-            margin-bottom: 10px;
+            font-size: 17px;
+            color: #0a1628;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
+            margin-bottom: 10px;
         }
         .question .q-number {
-            background: #d4a744;
-            color: #0a1a2e;
+            background: #0a1628;
+            color: #ffffff;
             border-radius: 50%;
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
             font-size: 14px;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
         .options {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px 25px;
-            margin-top: 8px;
+            gap: 10px 30px;
+            margin-top: 6px;
+            padding-right: 10px;
         }
         .options label {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 16px;
+            gap: 8px;
+            font-size: 15.5px;
             cursor: pointer;
-            color: #1e2f3f;
+            color: #1a2a4a;
             font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .options label:hover {
+            background: rgba(10, 22, 40, 0.06);
         }
         .options input[type="radio"] {
             width: 18px;
             height: 18px;
-            accent-color: #d4a744;
+            accent-color: #0a1628;
             cursor: pointer;
+            flex-shrink: 0;
+        }
+        .options input[type="radio"]:checked + span {
+            color: #0a1628;
+            font-weight: 700;
         }
 
-        /* رسالة خطأ */
+        @keyframes fadeSlide {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .question:nth-child(1) { animation-delay: 0.02s; }
+        .question:nth-child(2) { animation-delay: 0.04s; }
+        .question:nth-child(3) { animation-delay: 0.06s; }
+        .question:nth-child(4) { animation-delay: 0.08s; }
+        .question:nth-child(5) { animation-delay: 0.10s; }
+        .question:nth-child(6) { animation-delay: 0.12s; }
+        .question:nth-child(7) { animation-delay: 0.14s; }
+        .question:nth-child(8) { animation-delay: 0.16s; }
+        .question:nth-child(9) { animation-delay: 0.18s; }
+        .question:nth-child(10) { animation-delay: 0.20s; }
+        .question:nth-child(11) { animation-delay: 0.22s; }
+        .question:nth-child(12) { animation-delay: 0.24s; }
+        .question:nth-child(13) { animation-delay: 0.26s; }
+        .question:nth-child(14) { animation-delay: 0.28s; }
+        .question:nth-child(15) { animation-delay: 0.30s; }
+        .question:nth-child(16) { animation-delay: 0.32s; }
+        .question:nth-child(17) { animation-delay: 0.34s; }
+        .question:nth-child(18) { animation-delay: 0.36s; }
+
+        /* ===== رسائل الخطأ ===== */
         .error-msg {
             color: #b22222;
             font-weight: bold;
             text-align: center;
-            margin-top: 15px;
-            background: #ffe0e0;
-            padding: 10px;
-            border-radius: 12px;
+            margin-top: 18px;
+            background: #ffe8e8;
+            padding: 14px;
+            border-radius: 14px;
             border: 2px solid #b22222;
             display: none;
+            animation: shake 0.4s ease;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+        .server-msg {
+            text-align: center;
+            margin-top: 16px;
+            font-weight: bold;
+            font-size: 17px;
+            color: #0a1628;
         }
 
-        /* النتيجة */
+        /* ===== النتيجة ===== */
         .result-box {
-            margin-top: 25px;
-            padding: 20px;
-            background: #0a1a2e;
+            margin-top: 30px;
+            padding: 30px 20px 25px;
+            background: #0a1628;
             color: #fff;
-            border-radius: 20px;
+            border-radius: 30px;
             text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            border: 3px solid #d4a744;
+            border: 2px solid #c8d0dc;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
             display: none;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-        .result-box span {
-            color: #d4a744;
-            font-size: 34px;
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
         }
-        .result-box .name-result {
-            color: #fff;
+        .result-box .user-name {
             font-size: 22px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            color: #c8d0dc;
+        }
+        .result-box .big-score {
+            font-size: 56px;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+        .result-box .label {
+            font-size: 18px;
+            color: #a0aec0;
         }
         .result-box .msg {
-            font-size: 18px;
-            font-weight: normal;
-            margin-top: 8px;
-            color: #eee;
+            font-size: 19px;
+            font-weight: bold;
+            margin-top: 14px;
+            padding: 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .result-box .msg.pass {
+            color: #6fcf97;
+            border-color: #6fcf97;
+            background: rgba(111, 207, 151, 0.08);
+        }
+        .result-box .msg.fail {
+            color: #f2994a;
+            border-color: #f2994a;
+            background: rgba(242, 153, 74, 0.08);
+        }
+        .result-box .msg.blocked {
+            color: #ff6b6b;
+            border-color: #ff4444;
+            background: rgba(255, 68, 68, 0.12);
+            font-size: 26px;
+            padding: 20px;
+            animation: pulse 1.8s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 8px rgba(255, 68, 68, 0.15); }
+            100% { box-shadow: 0 0 25px rgba(255, 68, 68, 0.4); }
+        }
+        .result-box .btn {
+            margin-top: 20px;
+            background: #ffffff;
+            color: #0a1628;
+            border-color: #ffffff;
+        }
+        .result-box .btn:hover {
+            background: #e0e5ed;
+            color: #0a1628;
+            border-color: #e0e5ed;
         }
 
+        /* ===== الفوتر ===== */
         .footer {
-            margin-top: 25px;
+            margin-top: 30px;
             text-align: center;
-            color: #5a7a9a;
-            font-size: 14px;
+            color: #8a9aaa;
+            font-size: 13px;
+            border-top: 1px solid #e8ecf2;
+            padding-top: 18px;
+            letter-spacing: 0.3px;
         }
 
-        @media (max-width: 600px) {
-            .container { padding: 20px 15px; }
-            .question h3 { font-size: 16px; }
-            .options { gap: 8px; }
+        /* ===== تحسينات للجوال ===== */
+        @media (max-width: 650px) {
+            .container { padding: 20px 16px; }
+            .logo h1 { font-size: 26px; }
+            .logo img { max-width: 90px; }
+            .question h3 { font-size: 15px; }
+            .options { gap: 6px 14px; }
+            .options label { font-size: 14px; }
+            .result-box .big-score { font-size: 42px; }
+            .result-box .msg { font-size: 17px; }
+            .result-box .msg.blocked { font-size: 20px; }
+            .btn { padding: 10px 22px; font-size: 15px; }
+            .user-section { padding: 15px; }
+            .user-section input { font-size: 14px; }
         }
     </style>
 </head>
 <body>
 
-<div class="container" id="app">
+<div class="container">
 
-    <!-- اللوقو (ضع صورتك باسم logo.png في نفس المجلد) -->
+    <!-- ===== اللوقو ===== -->
     <div class="logo">
         <img src="logo.png" alt="لوقو السيرفر">
-        <h1>🚔 911 Police Mod</h1>
-        <p>اختبار التفعيل الرسمي</p>
+        <h1>🛡️ 911 Police Mod</h1>
+        <span class="subtitle">اختبار التفعيل الرسمي</span>
     </div>
 
-    <!-- حقل الاسم وزر البدء -->
-    <div class="user-section">
-        <label for="userName">👤 اسمك:</label>
+    <!-- ===== حقل الاسم وزر البدء (يظهر أول شيء) ===== -->
+    <div class="user-section" id="nameSection">
+        <label for="userName">👤 الاسم:</label>
         <input type="text" id="userName" placeholder="أدخل اسمك هنا..." />
-        <button class="btn" id="startBtn">ابدأ الاختبار</button>
+        <button class="btn" id="startBtn">▶️ بدء الاختبار</button>
     </div>
 
-    <!-- منطقة الأسئلة (تظهر بعد الضغط على بدء) -->
+    <!-- ===== منطقة تسجيل الدخول ===== -->
+    <div id="loginArea" style="display: none;">
+        <div id="loggedOut">
+            <a href="/auth/discord" class="btn btn-discord">🔗 تسجيل دخول عبر ديسكورد</a>
+        </div>
+        <div id="loggedIn" class="hide user-info">
+            <img id="userAvatar" src="" alt="صورة المستخدم">
+            <span class="username" id="userDisplayName">مستخدم</span>
+            <a href="/logout" class="btn btn-danger">🚪 خروج</a>
+        </div>
+    </div>
+
+    <!-- ===== شريط التقدم ===== -->
+    <div id="progressArea" style="display: none;">
+        <div class="progress-text">
+            <span>📌 تم الإجابة: <span id="answeredCount">0</span></span>
+            <span>من 18</span>
+        </div>
+        <div class="progress-bar">
+            <div class="fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <!-- ===== الأسئلة ===== -->
     <div id="questionsArea" style="display: none;">
         <div id="questionsContainer"></div>
-        <div style="text-align: center; margin-top: 20px;">
-            <button class="btn" id="submitBtn">📊 احسب نتيجتي</button>
+        <div style="text-align: center; margin-top: 25px;">
+            <button class="btn" id="submitBtn">📊 حساب النتيجة</button>
         </div>
         <div id="errorMsg" class="error-msg"></div>
+        <div id="serverMsg" class="server-msg"></div>
     </div>
 
-    <!-- النتيجة -->
+    <!-- ===== النتيجة ===== -->
     <div class="result-box" id="resultBox">
-        <div class="name-result" id="resultName"></div>
-        <div>⭐ نتيجتك: <span id="resultScore">0</span> / 13</div>
+        <div class="user-name" id="resultName"></div>
+        <div>
+            <span class="label">⭐ النتيجة</span>
+            <div class="big-score" id="resultScore">0</div>
+            <span class="label">من 18</span>
+        </div>
         <div class="msg" id="resultMessage"></div>
-        <button class="btn" style="margin-top: 18px; background: #d4a744; color: #0a1a2e;" id="retryBtn">🔄 إعادة الاختبار</button>
+        <button class="btn" id="retryBtn">🔄 إعادة الاختبار</button>
     </div>
 
     <div class="footer">© 2026 - 911 Police Mod | جميع الحقوق محفوظة</div>
@@ -265,7 +547,10 @@
 
 <script>
     (function() {
-        // ---------- البيانات ----------
+
+        // ============================================================
+        //  الأسئلة (18 سؤالاً)
+        // ============================================================
         const questions = [
             { id: 1, text: 'هل يحق لك قطع الإشارة في حال كنت عسكري؟', options: ['نعم', 'لا'], correct: 0 },
             { id: 2, text: 'هل يحق لك إطلاق النار على المواطن؟', options: ['نعم', 'لا'], correct: 0 },
@@ -279,48 +564,105 @@
             { id: 10, text: 'ماهو الرول بلاي؟', options: ['تقمص الشخصية بالأقوال والأفعال', 'قيادة المركبة بسرعة', 'إطلاق النار على المخالفين'], correct: 0 },
             { id: 11, text: 'هل يحق لك قطع بلاغ زميلك وإرسال بلاغك إذا عندك حالة اضطرارية؟', options: ['نعم', 'لا'], correct: 1 },
             { id: 12, text: 'في حال كنت في سيناريو وقُتِلْت هل يحق لك الرجوع مكان السيناريو؟', options: ['نعم', 'لا'], correct: 1 },
-            { id: 13, text: 'هل يحق لك بعمل اصطفاف عسكري في حال كنت برتبة رئيس رقباء؟', options: ['نعم', 'لا'], correct: 1 }
+            { id: 13, text: 'هل يحق لك بعمل اصطفاف عسكري في حال كنت برتبة رئيس رقباء؟', options: ['نعم', 'لا'], correct: 1 },
+            { id: 14, text: 'هل يحق لك استخدام السيارة الحكومية في أمور شخصية؟', options: ['نعم', 'لا'], correct: 1 },
+            { id: 15, text: 'في حال وجود بلاغ طلق نار، ما هو التصرف الصحيح؟', options: ['التوجه فوراً مع الإبلاغ', 'الانتظار حتى يصل الدعم', 'تجاهل البلاغ'], correct: 0 },
+            { id: 16, text: 'هل يحق لك تغطية الكاميرا أثناء تأدية المهمة؟', options: ['نعم', 'لا'], correct: 1 },
+            { id: 17, text: 'في حال قام مواطن بسبك أثناء الاستيقاف، ما هو التصرف الصحيح؟', options: ['توجيه مخالفة السب والشتم', 'إطلاق النار عليه', 'تجاهل الأمر'], correct: 0 },
+            { id: 18, text: 'هل يحق لك استخدام الرتبة العسكرية في الحياة الواقعية؟', options: ['نعم', 'لا'], correct: 1 }
         ];
 
-        // عناصر DOM
+        const TOTAL = questions.length;
+
+        // ===== عناصر DOM =====
         const userNameInput = document.getElementById('userName');
         const startBtn = document.getElementById('startBtn');
+        const nameSection = document.getElementById('nameSection');
+        const loginArea = document.getElementById('loginArea');
         const questionsArea = document.getElementById('questionsArea');
+        const progressArea = document.getElementById('progressArea');
         const questionsContainer = document.getElementById('questionsContainer');
         const submitBtn = document.getElementById('submitBtn');
         const resultBox = document.getElementById('resultBox');
-        const resultName = document.getElementById('resultName');
         const resultScore = document.getElementById('resultScore');
         const resultMessage = document.getElementById('resultMessage');
+        const resultName = document.getElementById('resultName');
         const retryBtn = document.getElementById('retryBtn');
         const errorMsg = document.getElementById('errorMsg');
+        const serverMsg = document.getElementById('serverMsg');
+        const loggedOut = document.getElementById('loggedOut');
+        const loggedIn = document.getElementById('loggedIn');
+        const userDisplayName = document.getElementById('userDisplayName');
+        const userAvatar = document.getElementById('userAvatar');
+        const progressFill = document.getElementById('progressFill');
+        const answeredCount = document.getElementById('answeredCount');
 
         let currentUserName = '';
 
-        // عرض الأسئلة
+        // ===== عرض الأسئلة =====
         function renderQuestions() {
             let html = '';
             questions.forEach((q) => {
                 const optionsHtml = q.options.map((opt, optIndex) => {
                     return `<label>
                                 <input type="radio" name="q${q.id}" value="${optIndex}" />
-                                ${opt}
+                                <span>${opt}</span>
                             </label>`;
                 }).join('');
-
                 html += `
-                    <div class="question">
+                    <div class="question" id="q-${q.id}">
                         <h3><span class="q-number">${q.id}</span> ${q.text}</h3>
                         <div class="options">${optionsHtml}</div>
                     </div>
                 `;
             });
             questionsContainer.innerHTML = html;
+
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', updateProgress);
+            });
+            updateProgress();
         }
 
-        // حساب النتيجة
+        // ===== شريط التقدم =====
+        function updateProgress() {
+            let answered = 0;
+            questions.forEach(q => {
+                const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                if (selected) answered++;
+            });
+            const percent = (answered / TOTAL) * 100;
+            progressFill.style.width = percent + '%';
+            answeredCount.textContent = answered;
+        }
+
+        // ===== التحقق من تسجيل الدخول =====
+        async function checkLoginStatus() {
+            try {
+                const res = await fetch('/api/me');
+                const data = await res.json();
+                if (data.authenticated) {
+                    loggedOut.classList.add('hide');
+                    loggedIn.classList.remove('hide');
+                    userDisplayName.textContent = data.username || 'مستخدم';
+                    if (data.avatar) {
+                        userAvatar.src = `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=64`;
+                    } else {
+                        userAvatar.src = 'https://cdn.discordapp.com/embed/avatars/0.png';
+                    }
+                } else {
+                    loggedOut.classList.remove('hide');
+                    loggedIn.classList.add('hide');
+                }
+            } catch (e) {
+                loggedOut.classList.remove('hide');
+                loggedIn.classList.add('hide');
+            }
+        }
+
+        // ===== حساب النتيجة =====
         function calculateScore() {
-            let correctCount = 0;
+            let correct = 0;
             let allAnswered = true;
             let unanswered = [];
 
@@ -331,32 +673,47 @@
                     unanswered.push(q.id);
                     return;
                 }
-                const val = parseInt(selected.value);
-                if (val === q.correct) correctCount++;
+                if (parseInt(selected.value) === q.correct) correct++;
             });
 
-            return { allAnswered, correctCount, unanswered };
+            return { correct, allAnswered, unanswered };
         }
 
-        // عرض النتيجة
-        function showResult(score, total) {
+        // ===== عرض النتيجة =====
+        function showResult(score, username) {
             resultScore.textContent = score;
-            resultName.textContent = `👮 ${currentUserName}`;
+            resultName.textContent = `👤 ${username || currentUserName || 'مستخدم'}`;
 
-            let msg = '';
-            if (score === total) msg = '🏆 ممتاز! إجابة كاملة 100%';
-            else if (score >= 10) msg = '👍 جيد جداً، اجتزت الاختبار بنجاح';
-            else if (score >= 7) msg = '📖 تحتاج مراجعة بعض النقاط';
-            else msg = '❌ للأسف لم تجتز الاختبار، حاول مرة أخرى';
+            let msgHtml = '';
+            let msgClass = '';
 
-            resultMessage.textContent = msg;
+            if (score >= 15) {
+                msgHtml = '🏆 ممتاز! أنت مؤهل للتفعيل الكامل';
+                msgClass = 'pass';
+            } else if (score >= 10) {
+                msgHtml = '✅ جيد جداً، اجتزت الاختبار بنجاح';
+                msgClass = 'pass';
+            } else if (score >= 6) {
+                msgHtml = '📖 مقبول، تحتاج مراجعة بعض النقاط';
+                msgClass = 'pass';
+            } else if (score >= 5) {
+                msgHtml = '⚠️ درجتك منخفضة، يُسمح لك بالتفعيل ولكن ننصحك بمراجعة اللوائح';
+                msgClass = 'pass';
+            } else {
+                msgHtml = '⛔ <strong>ممنوع من التفعيل</strong> ⛔<br>درجتك أقل من 5، يرجى مراجعة القوانين واللوائح ثم إعادة المحاولة.';
+                msgClass = 'blocked';
+            }
+
+            resultMessage.innerHTML = msgHtml;
+            resultMessage.className = 'msg ' + msgClass;
             resultBox.style.display = 'block';
             questionsArea.style.display = 'none';
-            startBtn.style.display = 'none';
-            errorMsg.style.display = 'none';
+            progressArea.style.display = 'none';
+            nameSection.style.display = 'none';
+            loginArea.style.display = 'none';
         }
 
-        // بدء الاختبار
+        // ===== بدء الاختبار =====
         function startExam() {
             const name = userNameInput.value.trim();
             if (name === '') {
@@ -364,51 +721,96 @@
                 return;
             }
             currentUserName = name;
-            renderQuestions();
+
+            // إخفاء حقل الاسم وإظهار باقي العناصر
+            nameSection.style.display = 'none';
+            loginArea.style.display = 'block';
             questionsArea.style.display = 'block';
-            startBtn.style.display = 'none';
-            resultBox.style.display = 'none';
+            progressArea.style.display = 'block';
+
+            renderQuestions();
+            checkLoginStatus();
             errorMsg.style.display = 'none';
+            serverMsg.textContent = '';
+            resultBox.style.display = 'none';
+
+            // تمرير إلى الأسئلة
             questionsArea.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // معالج زر حساب النتيجة
-        function handleSubmit() {
-            const { allAnswered, correctCount, unanswered } = calculateScore();
+        // ===== إرسال النتيجة =====
+        async function handleSubmit() {
+            const { correct, allAnswered, unanswered } = calculateScore();
 
             if (!allAnswered) {
                 errorMsg.textContent = `⚠️ لم تجب على الأسئلة: ${unanswered.join('، ')}. الرجاء إكمال الإجابة.`;
                 errorMsg.style.display = 'block';
                 return;
             }
-
             errorMsg.style.display = 'none';
-            showResult(correctCount, questions.length);
+            serverMsg.textContent = '⏳ جاري التحقق من حسابك...';
+
+            try {
+                const response = await fetch('/api/submit-result', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ score: correct, total: TOTAL })
+                });
+
+                const data = await response.json();
+
+                if (!data.success && data.message && data.message.includes('تسجيل الدخول')) {
+                    alert('⚠️ يرجى تسجيل الدخول عبر ديسكورد أولاً.');
+                    serverMsg.textContent = '';
+                    return;
+                }
+
+                serverMsg.textContent = '';
+                showResult(correct, data.username || currentUserName);
+
+            } catch (error) {
+                console.error(error);
+                serverMsg.textContent = '❌ حدث خطأ في الاتصال بالسيرفر. حاول مجدداً.';
+            }
         }
 
-        // إعادة الاختبار
+        // ===== إعادة الاختبار =====
         function resetExam() {
-            startBtn.style.display = 'inline-block';
             resultBox.style.display = 'none';
+            nameSection.style.display = 'flex';
+            loginArea.style.display = 'none';
             questionsArea.style.display = 'none';
+            progressArea.style.display = 'none';
             userNameInput.value = '';
             currentUserName = '';
             errorMsg.style.display = 'none';
-            renderQuestions(); // لإعادة تعيين الراديوات
+            serverMsg.textContent = '';
+            renderQuestions();
             userNameInput.focus();
         }
 
-        // ربط الأحداث
+        // ===== ربط الأحداث =====
         startBtn.addEventListener('click', startExam);
-        userNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') startExam(); });
+        userNameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') startExam();
+        });
         submitBtn.addEventListener('click', handleSubmit);
         retryBtn.addEventListener('click', resetExam);
 
-        // تجهيز أولي
-        questionsArea.style.display = 'none';
-        resultBox.style.display = 'none';
+        // ===== اختصار Enter =====
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && questionsArea.style.display !== 'none') {
+                handleSubmit();
+            }
+        });
+
+        // ===== التهيئة =====
         renderQuestions();
-        errorMsg.style.display = 'none';
+        loginArea.style.display = 'none';
+        questionsArea.style.display = 'none';
+        progressArea.style.display = 'none';
+        resultBox.style.display = 'none';
+
     })();
 </script>
 </body>
