@@ -33,11 +33,11 @@
             right: 0;
             bottom: 0;
             background-image: 
-                radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,0.15), transparent),
-                radial-gradient(1.5px 1.5px at 40px 70px, rgba(255,255,255,0.10), transparent),
-                radial-gradient(1.5px 1.5px at 50px 160px, rgba(255,255,255,0.20), transparent),
-                radial-gradient(1.5px 1.5px at 90px 40px, rgba(255,255,255,0.10), transparent),
-                radial-gradient(1.5px 1.5px at 130px 80px, rgba(255,255,255,0.15), transparent);
+                radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,0.12), transparent),
+                radial-gradient(1.5px 1.5px at 40px 70px, rgba(255,255,255,0.08), transparent),
+                radial-gradient(1.5px 1.5px at 50px 160px, rgba(255,255,255,0.18), transparent),
+                radial-gradient(1.5px 1.5px at 90px 40px, rgba(255,255,255,0.08), transparent),
+                radial-gradient(1.5px 1.5px at 130px 80px, rgba(255,255,255,0.12), transparent);
             background-size: 200px 200px;
             pointer-events: none;
             z-index: 0;
@@ -57,7 +57,7 @@
             border: 2px solid #c8d0dc;
         }
 
-        /* ===== اللوقو ===== */
+        /* ===== اللوقو (متحرك) ===== */
         .logo {
             text-align: center;
             margin-bottom: 25px;
@@ -79,11 +79,25 @@
             background: #fff;
             padding: 5px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
+            transition: transform 0.5s ease;
+            /* الحركة المستمرة: دوران بطيء جداً */
+            animation: floatLogo 4s ease-in-out infinite;
         }
+        /* تأثير عند المرور بالماوس */
         .logo img:hover {
-            transform: scale(1.05);
+            animation: spinLogo 0.8s ease forwards;
         }
+        @keyframes floatLogo {
+            0% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-6px) scale(1.02); }
+            100% { transform: translateY(0px) scale(1); }
+        }
+        @keyframes spinLogo {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(10deg) scale(1.1); }
+            100% { transform: rotate(-2deg) scale(1); }
+        }
+
         .logo h1 {
             font-size: 34px;
             color: #0a1628;
@@ -173,18 +187,6 @@
             border-color: #4752c4;
             color: #fff;
             box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
-        }
-        .btn-outline {
-            background: transparent;
-            color: #0a1628;
-            border: 2px solid #c8d0dc;
-            box-shadow: none;
-        }
-        .btn-outline:hover {
-            background: #f0f2f5;
-            color: #0a1628;
-            border-color: #a0aec0;
-            transform: translateY(-2px);
         }
         .btn-danger {
             background: #a32020;
@@ -483,14 +485,14 @@
 
 <div class="container">
 
-    <!-- ===== اللوقو ===== -->
+    <!-- ===== اللوقو (متحرك) ===== -->
     <div class="logo">
         <img src="logo.png" alt="لوقو السيرفر">
         <h1>🛡️ 911 Police Mod</h1>
         <span class="subtitle">اختبار التفعيل الرسمي</span>
     </div>
 
-    <!-- ===== حقل الاسم وزر البدء (يظهر أول شيء) ===== -->
+    <!-- ===== حقل الاسم وزر البدء (يظهر أولاً) ===== -->
     <div class="user-section" id="nameSection">
         <label for="userName">👤 الاسم:</label>
         <input type="text" id="userName" placeholder="أدخل اسمك هنا..." />
@@ -722,7 +724,6 @@
             }
             currentUserName = name;
 
-            // إخفاء حقل الاسم وإظهار باقي العناصر
             nameSection.style.display = 'none';
             loginArea.style.display = 'block';
             questionsArea.style.display = 'block';
@@ -734,7 +735,6 @@
             serverMsg.textContent = '';
             resultBox.style.display = 'none';
 
-            // تمرير إلى الأسئلة
             questionsArea.scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -797,7 +797,6 @@
         submitBtn.addEventListener('click', handleSubmit);
         retryBtn.addEventListener('click', resetExam);
 
-        // ===== اختصار Enter =====
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && questionsArea.style.display !== 'none') {
                 handleSubmit();
