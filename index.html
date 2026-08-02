@@ -50,7 +50,6 @@
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
             position: relative;
             z-index: 1;
-            transition: all 0.3s ease;
             border: 2px solid #c8d0dc;
         }
 
@@ -168,56 +167,6 @@
         }
         .btn:active {
             transform: scale(0.97);
-        }
-        .btn-discord {
-            background: #5865F2;
-            border-color: #5865F2;
-            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
-        }
-        .btn-discord:hover {
-            background: #4752c4;
-            border-color: #4752c4;
-            color: #fff;
-            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
-        }
-        .btn-danger {
-            background: #a32020;
-            border-color: #a32020;
-            padding: 6px 20px;
-            font-size: 14px;
-        }
-        .btn-danger:hover {
-            background: #cc0000;
-            border-color: #cc0000;
-            color: #fff;
-        }
-
-        #loginArea {
-            text-align: center;
-            margin: 0 0 20px;
-        }
-        .user-info {
-            display: inline-flex;
-            align-items: center;
-            gap: 14px;
-            background: #f5f7fa;
-            padding: 6px 20px 6px 16px;
-            border-radius: 50px;
-            border: 1px solid #e0e5ed;
-        }
-        .user-info img {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            border: 2px solid #c8d0dc;
-        }
-        .user-info .username {
-            font-weight: bold;
-            color: #0a1628;
-            font-size: 16px;
-        }
-        .hide {
-            display: none !important;
         }
 
         .progress-bar {
@@ -357,13 +306,6 @@
             25% { transform: translateX(-8px); }
             75% { transform: translateX(8px); }
         }
-        .server-msg {
-            text-align: center;
-            margin-top: 16px;
-            font-weight: bold;
-            font-size: 17px;
-            color: #0a1628;
-        }
 
         .result-box {
             margin-top: 30px;
@@ -470,9 +412,10 @@
 
 <div class="container">
 
-    <!-- ===== اللوقو (متحرك) ===== -->
+    <!-- ===== اللوقو ===== -->
     <div class="logo">
-        <img src="logo.gif" alt="لوقو السيرفر">
+        <!-- استخدم صورتك: logo.png أو logo.gif -->
+        <img src="logo.png" alt="لوقو السيرفر">
         <h1>🛡️ 911 Police Mod</h1>
         <span class="subtitle">اختبار التفعيل الرسمي</span>
     </div>
@@ -482,18 +425,6 @@
         <label for="userName">👤 الاسم:</label>
         <input type="text" id="userName" placeholder="أدخل اسمك هنا..." />
         <button class="btn" id="startBtn">▶️ بدء الاختبار</button>
-    </div>
-
-    <!-- ===== منطقة تسجيل الدخول ===== -->
-    <div id="loginArea" style="display: none;">
-        <div id="loggedOut">
-            <a href="/auth/discord" class="btn btn-discord">🔗 تسجيل دخول عبر ديسكورد</a>
-        </div>
-        <div id="loggedIn" class="hide user-info">
-            <img id="userAvatar" src="" alt="صورة المستخدم">
-            <span class="username" id="userDisplayName">مستخدم</span>
-            <a href="/logout" class="btn btn-danger">🚪 خروج</a>
-        </div>
     </div>
 
     <!-- ===== شريط التقدم ===== -->
@@ -514,7 +445,6 @@
             <button class="btn" id="submitBtn">📊 حساب النتيجة</button>
         </div>
         <div id="errorMsg" class="error-msg"></div>
-        <div id="serverMsg" class="server-msg"></div>
     </div>
 
     <!-- ===== النتيجة ===== -->
@@ -534,10 +464,7 @@
 
 <script>
     (function() {
-
-        // ============================================================
-        //  الأسئلة (18 سؤالاً)
-        // ============================================================
+        // 18 سؤالاً
         const questions = [
             { id: 1, text: 'هل يحق لك قطع الإشارة في حال كنت عسكري؟', options: ['نعم', 'لا'], correct: 0 },
             { id: 2, text: 'هل يحق لك إطلاق النار على المواطن؟', options: ['نعم', 'لا'], correct: 0 },
@@ -561,11 +488,9 @@
 
         const TOTAL = questions.length;
 
-        // ===== عناصر DOM =====
         const userNameInput = document.getElementById('userName');
         const startBtn = document.getElementById('startBtn');
         const nameSection = document.getElementById('nameSection');
-        const loginArea = document.getElementById('loginArea');
         const questionsArea = document.getElementById('questionsArea');
         const progressArea = document.getElementById('progressArea');
         const questionsContainer = document.getElementById('questionsContainer');
@@ -576,17 +501,11 @@
         const resultName = document.getElementById('resultName');
         const retryBtn = document.getElementById('retryBtn');
         const errorMsg = document.getElementById('errorMsg');
-        const serverMsg = document.getElementById('serverMsg');
-        const loggedOut = document.getElementById('loggedOut');
-        const loggedIn = document.getElementById('loggedIn');
-        const userDisplayName = document.getElementById('userDisplayName');
-        const userAvatar = document.getElementById('userAvatar');
         const progressFill = document.getElementById('progressFill');
         const answeredCount = document.getElementById('answeredCount');
 
         let currentUserName = '';
 
-        // ===== عرض الأسئلة =====
         function renderQuestions() {
             let html = '';
             questions.forEach((q) => {
@@ -611,7 +530,6 @@
             updateProgress();
         }
 
-        // ===== شريط التقدم =====
         function updateProgress() {
             let answered = 0;
             questions.forEach(q => {
@@ -623,31 +541,6 @@
             answeredCount.textContent = answered;
         }
 
-        // ===== التحقق من تسجيل الدخول =====
-        async function checkLoginStatus() {
-            try {
-                const res = await fetch('/api/me');
-                const data = await res.json();
-                if (data.authenticated) {
-                    loggedOut.classList.add('hide');
-                    loggedIn.classList.remove('hide');
-                    userDisplayName.textContent = data.username || 'مستخدم';
-                    if (data.avatar) {
-                        userAvatar.src = `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=64`;
-                    } else {
-                        userAvatar.src = 'https://cdn.discordapp.com/embed/avatars/0.png';
-                    }
-                } else {
-                    loggedOut.classList.remove('hide');
-                    loggedIn.classList.add('hide');
-                }
-            } catch (e) {
-                loggedOut.classList.remove('hide');
-                loggedIn.classList.add('hide');
-            }
-        }
-
-        // ===== حساب النتيجة =====
         function calculateScore() {
             let correct = 0;
             let allAnswered = true;
@@ -666,7 +559,6 @@
             return { correct, allAnswered, unanswered };
         }
 
-        // ===== عرض النتيجة =====
         function showResult(score, username) {
             resultScore.textContent = score;
             resultName.textContent = `👤 ${username || currentUserName || 'مستخدم'}`;
@@ -697,10 +589,8 @@
             questionsArea.style.display = 'none';
             progressArea.style.display = 'none';
             nameSection.style.display = 'none';
-            loginArea.style.display = 'none';
         }
 
-        // ===== بدء الاختبار =====
         function startExam() {
             const name = userNameInput.value.trim();
             if (name === '') {
@@ -710,21 +600,16 @@
             currentUserName = name;
 
             nameSection.style.display = 'none';
-            loginArea.style.display = 'block';
             questionsArea.style.display = 'block';
             progressArea.style.display = 'block';
 
             renderQuestions();
-            checkLoginStatus();
             errorMsg.style.display = 'none';
-            serverMsg.textContent = '';
             resultBox.style.display = 'none';
-
             questionsArea.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // ===== إرسال النتيجة =====
-        async function handleSubmit() {
+        function handleSubmit() {
             const { correct, allAnswered, unanswered } = calculateScore();
 
             if (!allAnswered) {
@@ -733,48 +618,21 @@
                 return;
             }
             errorMsg.style.display = 'none';
-            serverMsg.textContent = '⏳ جاري التحقق من حسابك...';
-
-            try {
-                const response = await fetch('/api/submit-result', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ score: correct, total: TOTAL })
-                });
-
-                const data = await response.json();
-
-                if (!data.success && data.message && data.message.includes('تسجيل الدخول')) {
-                    alert('⚠️ يرجى تسجيل الدخول عبر ديسكورد أولاً.');
-                    serverMsg.textContent = '';
-                    return;
-                }
-
-                serverMsg.textContent = '';
-                showResult(correct, data.username || currentUserName);
-
-            } catch (error) {
-                console.error(error);
-                serverMsg.textContent = '❌ حدث خطأ في الاتصال بالسيرفر. حاول مجدداً.';
-            }
+            showResult(correct, currentUserName);
         }
 
-        // ===== إعادة الاختبار =====
         function resetExam() {
             resultBox.style.display = 'none';
             nameSection.style.display = 'flex';
-            loginArea.style.display = 'none';
             questionsArea.style.display = 'none';
             progressArea.style.display = 'none';
             userNameInput.value = '';
             currentUserName = '';
             errorMsg.style.display = 'none';
-            serverMsg.textContent = '';
             renderQuestions();
             userNameInput.focus();
         }
 
-        // ===== ربط الأحداث =====
         startBtn.addEventListener('click', startExam);
         userNameInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') startExam();
@@ -788,13 +646,11 @@
             }
         });
 
-        // ===== التهيئة =====
+        // تهيئة أولية
         renderQuestions();
-        loginArea.style.display = 'none';
         questionsArea.style.display = 'none';
         progressArea.style.display = 'none';
         resultBox.style.display = 'none';
-
     })();
 </script>
 </body>
