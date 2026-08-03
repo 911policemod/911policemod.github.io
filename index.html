@@ -286,8 +286,6 @@
         .question:nth-child(14) { animation-delay: 0.28s; }
         .question:nth-child(15) { animation-delay: 0.30s; }
         .question:nth-child(16) { animation-delay: 0.32s; }
-        .question:nth-child(17) { animation-delay: 0.34s; }
-        .question:nth-child(18) { animation-delay: 0.36s; }
 
         .error-msg {
             color: #b22222;
@@ -427,7 +425,7 @@
     <div id="progressArea" style="display: none;">
         <div class="progress-text">
             <span>📌 تم الإجابة: <span id="answeredCount">0</span></span>
-            <span>من 18</span>
+            <span>من 16</span>
         </div>
         <div class="progress-bar">
             <div class="fill" id="progressFill"></div>
@@ -447,7 +445,7 @@
         <div>
             <span class="label">⭐ النتيجة</span>
             <div class="big-score" id="resultScore">0</div>
-            <span class="label">من 18</span>
+            <span class="label">من 16</span>
         </div>
         <div class="msg" id="resultMessage"></div>
         <button class="btn" id="retryBtn">🔄 إعادة الاختبار</button>
@@ -458,6 +456,7 @@
 
 <script>
     (function() {
+        // ===== الأسئلة (16 سؤالاً فقط) =====
         const questions = [
             { id: 1, text: 'هل يحق لك قطع الإشارة في حال كنت عسكري؟', options: ['نعم', 'لا'], correct: 0 },
             { id: 2, text: 'هل يحق لك إطلاق النار على المواطن؟', options: ['نعم', 'لا'], correct: 0 },
@@ -474,13 +473,12 @@
             { id: 13, text: 'هل يحق لك بعمل اصطفاف عسكري في حال كنت برتبة رئيس رقباء؟', options: ['نعم', 'لا'], correct: 1 },
             { id: 14, text: 'هل يحق لك استخدام السيارة الحكومية في أمور شخصية؟', options: ['نعم', 'لا'], correct: 1 },
             { id: 15, text: 'في حال وجود بلاغ طلق نار، ما هو التصرف الصحيح؟', options: ['التوجه فوراً مع الإبلاغ', 'الانتظار حتى يصل الدعم', 'تجاهل البلاغ'], correct: 0 },
-            { id: 16, text: 'هل يحق لك تغطية الكاميرا أثناء تأدية المهمة؟', options: ['نعم', 'لا'], correct: 1 },
-            { id: 17, text: 'في حال قام مواطن بسبك أثناء الاستيقاف، ما هو التصرف الصحيح؟', options: ['توجيه مخالفة السب والشتم', 'إطلاق النار عليه', 'تجاهل الأمر'], correct: 0 },
-            { id: 18, text: 'هل يحق لك استخدام الرتبة العسكرية في الحياة الواقعية؟', options: ['نعم', 'لا'], correct: 1 }
+            { id: 16, text: 'كم هي المدة للصدم الأحترافي ؟', options: ['دقيقتين', 'خمس دقائق'], correct: 1 } // الإجابة الصحيحة: خمس دقائق
         ];
 
-        const TOTAL = questions.length;
+        const TOTAL = questions.length; // = 16
 
+        // ===== باقي الكود (نفسه ولكن مع تغيير العدد إلى 16) =====
         const userNameInput = document.getElementById('userName');
         const startBtn = document.getElementById('startBtn');
         const nameSection = document.getElementById('nameSection');
@@ -538,7 +536,7 @@
             resultScore.textContent = score;
             resultName.textContent = `👤 ${username || currentUserName || 'مستخدم'}`;
             let msgHtml, msgClass;
-            if (score >= 15) { msgHtml = '🏆 ممتاز! أنت مؤهل للتفعيل الكامل'; msgClass = 'pass'; }
+            if (score >= 14) { msgHtml = '🏆 ممتاز! أنت مؤهل للتفعيل الكامل'; msgClass = 'pass'; }
             else if (score >= 10) { msgHtml = '✅ جيد جداً، اجتزت الاختبار بنجاح'; msgClass = 'pass'; }
             else if (score >= 6) { msgHtml = '📖 مقبول، تحتاج مراجعة بعض النقاط'; msgClass = 'pass'; }
             else if (score >= 5) { msgHtml = '⚠️ درجتك منخفضة، يُسمح لك بالتفعيل ولكن ننصحك بمراجعة اللوائح'; msgClass = 'pass'; }
